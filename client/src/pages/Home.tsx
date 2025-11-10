@@ -17,29 +17,32 @@ export default function Home() {
   };
 
   const handleAnalyze = async () => {
+    if (!selectedImage) return;
+    
     setIsAnalyzing(true);
     
-    // TODO: Replace with actual API call
-    // const formData = new FormData();
-    // formData.append('image', selectedImage.file);
-    // const response = await fetch('YOUR_API_ENDPOINT', {
-    //   method: 'POST',
-    //   body: formData
-    // });
-    // const data = await response.json();
-    
-    // Simulate API call with mock data
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const mockResults: HyenaMatch[] = [
-      { id: 'HYN-001', name: 'Shenzi', confidence: 87 },
-      { id: 'HYN-042', name: 'Banzai', confidence: 64 },
-      { id: 'HYN-018', name: 'Ed', confidence: 41 },
-      { id: 'HYN-029', name: 'Kamari', confidence: 23 },
-    ];
-    
-    setResults(mockResults);
-    setIsAnalyzing(false);
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedImage.file);
+      
+      const response = await fetch('/api/analyze-footprint', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to analyze footprint');
+      }
+      
+      const data = await response.json();
+      setResults(data.results);
+    } catch (error) {
+      console.error('Error analyzing footprint:', error);
+      alert(error instanceof Error ? error.message : 'Failed to analyze footprint. Please try again.');
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleRemoveImage = () => {
