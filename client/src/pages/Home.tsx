@@ -36,7 +36,11 @@ export default function Home() {
       }
       
       const data = await response.json();
-      setResults(data.results);
+      console.log('Received API response:', data);
+      // Check if data has results property, otherwise use data directly if it's an array
+      const results = data.results || data;
+      console.log('Parsed results:', results);
+      setResults([results]);
     } catch (error) {
       console.error('Error analyzing footprint:', error);
       alert(error instanceof Error ? error.message : 'Failed to analyze footprint. Please try again.');

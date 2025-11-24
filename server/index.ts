@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import 'dotenv/config';
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -71,11 +72,10 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  // Use localhost for local development (macOS compatibility)
+  // Use 0.0.0.0 on Replit (detected via REPL_ID env var)
+  const host = process.env.REPL_ID ? "0.0.0.0" : "localhost";
+  server.listen(port, host, () => {
+  log(`serving on ${host}:${port}`);
   });
 })();

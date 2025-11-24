@@ -31,6 +31,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!apiEndpoint || apiEndpoint === '') {
         // If no API endpoint is configured, return mock data for testing
         console.log('No FOOTPRINT_API_ENDPOINT configured, returning mock data');
+        console.log('DEBUG: API Endpoint value =', apiEndpoint);  // ADD THIS LINE
         
         // Simulate processing delay
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -48,17 +49,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Forward the image to the external API
       const formData = new FormData();
       const blob = new Blob([req.file.buffer], { type: req.file.mimetype });
-      formData.append('image', blob, req.file.originalname);
+      formData.append('files', blob, req.file.originalname);
 
       const response = await axios.post(apiEndpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 30000, // 30 second timeout
+        timeout: 120000, // 30 second timeout
+      });
+
+      // Log the full API response (not truncated)
+      // console.log('Full API Response:', JSON.stringify(response.data[0]['results'], null, 2));
+
+      const raw = response.data[0]['results'];
+
+
+      const prob = raw[0]['probabilities'][raw[0].name];
+      const name = raw[0].name;  
+      const displayName = name.charAt(0).toUpperCase() + name.slice(1) + " Hyena";
+
+      console.log("Probability: ", prob);
+      console.log("Raw: ", raw);
+
+      res.json({
+        id: raw[0].class.toString(),
+        name: displayName,
+        confidence: Math.round(prob * 100),
+
       });
 
       // Forward the API response to the client
-      res.json(response.data);
+      //res.json(response.data);
     } catch (error) {
       console.error('Error analyzing footprint:', error);
       
