@@ -2,6 +2,24 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import axios from "axios";
+import { Router } from "express";
+import rateLimit from "express-rate-limit";
+
+const router = Router();
+
+const analyzeLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+
+  handler: (req, res) => {
+    return res.status(429).json({
+      error: "Rate limit exceeded",
+      message: "Too many requests. Please try again in a minute."
+    });
+  }
+});
 
 const upload = multer({
   storage: multer.memoryStorage(),

@@ -4,6 +4,7 @@ import UploadZone from '@/components/UploadZone';
 import ImagePreview from '@/components/ImagePreview';
 import ResultsDisplay, { type HyenaMatch } from '@/components/ResultsDisplay';
 import LoadingOverlay from '@/components/LoadingOverlay';
+import Gallery from "@/components/Gallery";
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState<{ file: File; url: string } | null>(null);
@@ -56,13 +57,21 @@ export default function Home() {
     setSelectedImage(null);
     setResults(null);
   };
+  /*        <div className="mt-10 px-4">
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            Try a Sample Footprint
+          </h2>
+          <Gallery onSelect={handleImageSelect} />
+        </div> */
 
   return (
     <div className="min-h-screen bg-background">
       <Hero />
       
       {!selectedImage && !results && (
+        <>
         <UploadZone onImageSelect={handleImageSelect} />
+        </>
       )}
       
       {selectedImage && !results && (

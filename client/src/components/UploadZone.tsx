@@ -66,6 +66,29 @@ export default function UploadZone({ onImageSelect }: UploadZoneProps) {
               </span>
             </Button>
           </label>
+          <div className="mt-4">
+            <select
+              className="border rounded px-4 py-2 w-full text-black"
+              defaultValue=""
+              onChange={async (e) => {
+                const src = e.target.value;
+                if (!src) return;
+
+                // Fetch sample image and convert to File
+                const res = await fetch(src);
+                const blob = await res.blob();
+                const file = new File([blob], src.split("/").pop()!, { type: blob.type });
+
+                onImageSelect(file);
+              }}
+            >
+              <option value="">Choose Sample Footprint</option>
+              <option value="/sample/sample1.png">Brown Hyena Footprint 1</option>
+              <option value="/sample/sample2.png">Brown Hyena Footprint 2</option>
+              <option value="/sample/sample3.png">Spotted Hyena Footprint 1</option>
+              <option value="/sample/sample4.png">Spotted Hyena Footprint 2</option>
+            </select>
+            </div>
           <input
             id="file-input"
             type="file"
