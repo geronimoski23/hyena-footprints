@@ -9,14 +9,15 @@ In partnership with WildTrack (wildtrack.org), we have developed a hyena footpri
 
 ### Frontend (React + TypeScript)
 - **Hero Section**: Savanna landscape background with app title and description
-    <img src="images/Hero.png" width="400">
+    ![Hero](images/Hero.png)
 - **Upload Interface**: Drag-and-drop zone with file browser option and select sample image option
-    <img src="images/Select.png" width="250">
+    ![Select](images/Select.png)
+
 - **Image Preview**: Shows uploaded image with metadata before analysis
 - **Loading State**: Overlay with spinner during API processing
-    <img src="images/Upload.png" width="400">
+    ![Upload](images/Upload.png)
 - **Results Display**: Shows identified hyenas with confidence percentages
-    <img src="images/Result.png" width="400">
+    ![Result](images/Result.png)
 
 
 ### Backend (Express + Node.js)
