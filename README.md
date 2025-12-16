@@ -5,6 +5,7 @@
 In partnership with WildTrack (wildtrack.org), we have developed a hyena footprint identification system that allows users to match footprints they see in the wild to the species it belongs to.
 
 Link: http://hyenaclassification.org/
+
 Model: https://github.com/tylercaulfield/Hyena-Footprints/
 
 
